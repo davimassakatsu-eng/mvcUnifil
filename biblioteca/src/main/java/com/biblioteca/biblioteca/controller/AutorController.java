@@ -1,27 +1,24 @@
 package com.biblioteca.biblioteca.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.biblioteca.biblioteca.model.Autor;
+import com.biblioteca.biblioteca.repository.AutorRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import com.biblioteca.biblioteca.model.Autor;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/autores")
 public class AutorController {
 
-    // Armazenamento temporário em memória (some ao reiniciar a aplicação)
-    private final List<Autor> autores = new ArrayList<>();
+    private final AutorRepository autorRepository;
+
+    public AutorController(AutorRepository autorRepository) {
+        this.autorRepository = autorRepository;
+    }
 
     @GetMapping
     public String listar(Model model) {
-        model.addAttribute("autores", autores);
+        model.addAttribute("autores", autorRepository.findAll());
         return "autor/lista";
     }
 
@@ -31,9 +28,15 @@ public class AutorController {
         return "autor/form";
     }
 
-    @PostMapping
+    @PostMapping("/salvar")
     public String salvar(@ModelAttribute Autor autor) {
-        autores.add(autor);
+        autorRepository.save(autor);
+        return "redirect:/autores";
+    }
+
+    @PostMapping("/excluir/{id}")
+    public String excluir(@PathVariable Long id) {
+        autorRepository.deleteById(id);
         return "redirect:/autores";
     }
 }

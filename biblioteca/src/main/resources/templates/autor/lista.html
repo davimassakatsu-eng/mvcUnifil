@@ -5,17 +5,34 @@
     <title>Autores</title>
 </head>
 <body>
+    <h1>Autores</h1>
+    <a th:href="@{/autores/novo}">Novo autor</a> |
+    <a th:href="@{/}">Voltar</a>
 
-<h1>Autores cadastrados</h1>
-
-<p th:if="${#lists.isEmpty(autores)}">Nenhum autor cadastrado.</p>
-
-<ul>
-    <li th:each="autor : ${autores}"
-        th:text="${autor.nome} + ' (' + ${autor.nacionalidade} + ')'"></li>
-</ul>
-
-<a th:href="@{/autores/novo}">Novo autor</a>
-
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Nacionalidade</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="a : ${autores}">
+                <td th:text="${a.id}"></td>
+                <td th:text="${a.nome}"></td>
+                <td th:text="${a.nacionalidade}"></td>
+                <td>
+                    <form th:action="@{/autores/excluir/{id}(id=${a.id})}" method="post">
+                        <button type="submit">Excluir</button>
+                    </form>
+                </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(autores)}">
+                <td colspan="4">Nenhum autor cadastrado.</td>
+            </tr>
+        </tbody>
+    </table>
 </body>
 </html>

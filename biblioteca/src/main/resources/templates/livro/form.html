@@ -8,7 +8,7 @@
 
 <h1>Cadastrar Livro</h1>
 
-<form th:action="@{/livros}" th:object="${livro}" method="post">
+<form th:action="@{/livros/salvar}" th:object="${livro}" method="post">
     <label for="titulo">Título:</label>
     <input type="text" id="titulo" th:field="*{titulo}" />
 

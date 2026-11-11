@@ -5,17 +5,36 @@
     <title>Livros</title>
 </head>
 <body>
+    <h1>Livros</h1>
+    <a th:href="@{/livros/novo}">Novo livro</a> |
+    <a th:href="@{/}">Voltar</a>
 
-<h1>Livros cadastrados</h1>
-
-<p th:if="${#lists.isEmpty(livros)}">Nenhum livro cadastrado.</p>
-
-<ul>
-    <li th:each="livro : ${livros}"
-        th:text="${livro.titulo} + ' - ' + ${livro.autor} + ' (' + ${livro.isbn} + ')'"></li>
-</ul>
-
-<a th:href="@{/livros/novo}">Novo livro</a>
-
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Título</th>
+                <th>Autor</th>
+                <th>ISBN</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="l : ${livros}">
+                <td th:text="${l.id}"></td>
+                <td th:text="${l.titulo}"></td>
+                <td th:text="${l.autor}"></td>
+                <td th:text="${l.isbn}"></td>
+                <td>
+                    <form th:action="@{/livros/excluir/{id}(id=${l.id})}" method="post">
+                        <button type="submit">Excluir</button>
+                    </form>
+                </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(livros)}">
+                <td colspan="5">Nenhum livro cadastrado.</td>
+            </tr>
+        </tbody>
+    </table>
 </body>
 </html>

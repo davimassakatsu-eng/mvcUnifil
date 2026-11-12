@@ -33,6 +33,14 @@ public class LivroController {
         return "livro/form";
     }
 
+    @GetMapping("/editar/{id}")
+    public String editar(@PathVariable Long id, Model model) {
+        Livro livro = livroRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Livro não encontrado: " + id));
+        model.addAttribute("livro", livro);
+        return "livro/form";
+    }
+
     @PostMapping("/salvar")
     public String salvar(@ModelAttribute Livro livro) {
         livroRepository.save(livro);
